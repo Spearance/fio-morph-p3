@@ -1,5 +1,5 @@
 # FioMorph.p
-# v. 0.1.1
+# v. 0.1.2
 # Evgeniy Lepeshkin, 2025-10-07
 
 @CLASS
@@ -131,7 +131,7 @@ $result[$hGender.[^type.lower[]].[$self.sex]]
 
 
 #######################################
-@_morph[case;type;name][h;r;isMatched]
+@_morph[case;type;name][r;isMatched]
 $result[^if(def $name){$name}{$self.[$type]}]
 $isMatched(0)
 
@@ -202,7 +202,7 @@ $result[$str]
 		$result[^result.left(^result.length[] - ^hyp.match.length[])]
 	}
 	$result[${result}$hyp.postmatch]
-}{
+}(def $r && $r ne "."){
 	$result[${result}$r]
 }
 ### End @_apply
@@ -312,12 +312,12 @@ $hPr[
 			$.0[
 				$.rules[
 					$.0[
-						$.test[ь]
-						$.repl[^table::create{r	d	v	t	p^#0A-и	-и		ю	-и}]
+						$.test[ель,оль,эль,б,в,г,д,ж,з,й,к,л,м,н,п,р,с,т,ф,х,ц,ч,ш,щ,ъ]
+						$.repl[^table::create{r	d	v	t	p^#0A.	.	.	.	.}]
 					]
 					$.1[
-						$.test[б,в,г,д,ж,з,й,к,л,м,н,п,р,с,т,ф,х,ц,ч,ш,щ,ъ,ель,оль,эль]
-						$.repl[^table::create{r	d	v	t	p}]
+						$.test[ь]
+						$.repl[^table::create{r	d	v	t	p^#0A-и	-и	.	ю	-и}]
 					]
 				]
 			]
@@ -333,7 +333,7 @@ $hPr[
 				$.rules[
 					$.0[
 						$.test[е,ё,и,о,у,ы,э,ю]
-						$.repl[^table::create{r	d	v	t	p}]
+						$.repl[^table::create{r	d	v	t	p^#0A.	.	.	.	.}]
 					]
 					$.1[
 						$.test[га,ка,ха,ча,ща,жа]
@@ -401,7 +401,7 @@ $hPr[
 				$.rules[
 					$.0[
 						$.test[дюма,тома,дега,люка,ферма,гамарра,петипа,шандра,гусь,ремень,камень,онук,богода,нечипас,долгопалец,маненок,рева,кива]
-						$.repl[^table::create{r	d	v	t	p}]
+						$.repl[^table::create{r	d	v	t	p^#0A.	.	.	.	.}]
 					]
 					$.1[
 						$.test[вий,сой,цой,хой]
@@ -414,16 +414,20 @@ $hPr[
 			$.0[
 				$.rules[
 					$.0[
-						$.test[б,в,г,д,ж,з,й,к,л,м,н,п,р,с,т,ф,х,ц,ч,ш,щ,ъ,ь]
-						$.repl[^table::create{r	d	v	t	p}]
-					]
-					$.1[
 						$.test[ска,цка,ая,ская]
 						$.repl[^table::create{r	d	v	t	p^#0A-ой	-ой	-ую	-ой	-ой}]
 					]
-					$.2[
+					$.1[
 						$.test[на]
 						$.repl[^table::create{r	d	v	t	p^#0A-ой	-ой	-у	-ой	-ой}]
+					]
+					$.2[
+						$.test[ай]
+						$.repl[^table::create{r	d	v	t	p^#0A.	.	.	.	.}]
+					]
+					$.3[
+						$.test[б,в,г,д,ж,з,й,к,л,м,н,п,р,с,т,ф,х,ц,ч,ш,щ,ъ,ь]
+						$.repl[^table::create{r	d	v	t	p^#0A.	.	.	.	.}]
 					]
 				]
 			]
@@ -443,7 +447,7 @@ $hPr[
 					]
 					$.3[
 						$.test[ия,иа,аа,оа,уа,ыа,еа,юа,эа,их,ых,о,е,э,и,ы,у,ю]
-						$.repl[^table::create{r	d	v	t	p}]
+						$.repl[^table::create{r	d	v	t	p^#0A.	.	.	.	.}]
 					]
 					$.4[
 						$.test[ова,ева]
