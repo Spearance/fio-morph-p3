@@ -23,8 +23,8 @@ $fio[^FioMorph::create[
 ]]
 
 # Полное ФИО по падежам
-# Именительный
-^fio.fullName[i]
+# Именительный, фамилия справа
+^fio.fullName[i;r]
 # Родительный
 ^fio.fullName[R]
 # Дательный

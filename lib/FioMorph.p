@@ -1,5 +1,5 @@
 # FioMorph.p
-# v. 0.1.0
+# v. 0.1.1
 # Evgeniy Lepeshkin, 2025-10-07
 
 @CLASS
@@ -26,24 +26,31 @@ $self.middle[]
 
 ^if($param is "hash"){
 	^if(^param.gender.int(2) < 2){
-		$self.gender($param.gender)
+		$self.sex($param.gender)
 	}(def $self.surname && def $self.middle){
-		$self.gender(^checkGender[$self.surname;$self.middle])
+		$self.sex(^checkGender[$self.surname;$self.middle])
 	}{
-		$self.gender(2)
+		$self.sex(2)
 	}
 }{
-	$self.gender(^checkGender[$self.surname;$self.middle])
+	$self.sex(^checkGender[$self.surname;$self.middle])
 }
 ### End @create
 
 
 #######################################
-@fullName[case]
+@fullName[case;position]
 ^if(!def $case){
 	$case[$DEFAULT.CASE]
 }
-$result[^surName[$case] ^firstName[$case]^if(def $self.middle){ ^middleName[$case]}]
+^switch[$position]{
+	^case[r;R;right;справа]{
+		$result[^firstName[$case]^if(def $self.middle){ ^middleName[$case]} ^surName[$case]]
+	}
+	^case[l;L;left;слева;DEFAULT]{
+		$result[^surName[$case] ^firstName[$case]^if(def $self.middle){ ^middleName[$case]}]
+	}
+}
 ### End @fullName
 
 
@@ -89,13 +96,13 @@ $result[^if(def $self.middle){^changeCase[$case;middle]}]
 
 
 #######################################
-@sex[type]
+@gender[type]
 ^if(!def $type){
 	$type[$DEFAULT.GENDER]
 }
 
-$result[$hGender.[^type.lower[]].[$self.gender]]
-### End @sex
+$result[$hGender.[^type.lower[]].[$self.sex]]
+### End @gender
 
 
 #######################################
@@ -128,15 +135,15 @@ $result[$hGender.[^type.lower[]].[$self.gender]]
 $result[^if(def $name){$name}{$self.[$type]}]
 $isMatched(0)
 
-^if($self.gender < 2){
+^if($self.sex < 2){
 	^if(def $hPr.[$type].exceptions){
-		$r[^_matchRules[^hash::create[$hPr.[$type].exceptions.[$self.gender].rules];$result;$case]]
+		$r[^_matchRules[^hash::create[$hPr.[$type].exceptions.[$self.sex].rules];$result;$case]]
 		^if(def $r){
 			$isMatched(1)
 		}
 	}
 	^if(!$isMatched){
-		$r[^_matchRules[^hash::create[$hPr.[$type].suffixes.[$self.gender].rules];$result;$case]]
+		$r[^_matchRules[^hash::create[$hPr.[$type].suffixes.[$self.sex].rules];$result;$case]]
 		^if(def $r){
 			$isMatched(1)
 		}
@@ -251,7 +258,6 @@ $result(2)
 #######################################
 @auto[]
 $DEFAULT[
-	$.CASE[i]
 	$.GENDER[full]
 ]
 

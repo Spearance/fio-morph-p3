@@ -1,53 +1,64 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Демо склонение ФИО по падежам</title>
-<meta name="description" content="демонстрация работы класса">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/parser3.min.js"></script>
-<style>
-body {
-font-family: 'PT Sans','Arial',sans-serif;
-font-size: 120%;
-margin: 3em;
-}
-code {
-background-color: #EEEEEE;
-border-radius: 4px;
-padding: 0.2em;
-}
-blockquote {
-border-left: 3px solid #BBBBBB;
-padding: 1em 0.5em;
-}
-.pre {
-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-white-space: pre;
-}
-table {
-width: 100%;
-border-collapse: collapse;
-margin: 0.5em 0;
-}
-td, th {
-border: 1px solid grey;
-}
-th {
-font-weight: bold;
-font-size: 80%;
-}
-td {
-text-align: center;
-}
-</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Демо склонение ФИО по падежам</title>
+	<meta name="description" content="демонстрация работы класса">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/parser3.min.js"></script>
+	<style>
+		body {
+			font-family: 'PT Sans', 'Arial', sans-serif;
+			font-size: 120%;
+			margin: 3em;
+		}
+
+		code {
+			background-color: #EEEEEE;
+			border-radius: 4px;
+			padding: 0.2em;
+		}
+
+		blockquote {
+			border-left: 3px solid #BBBBBB;
+			padding: 1em 0.5em;
+		}
+
+		.pre {
+			font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+			white-space: pre;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 0.5em 0;
+		}
+
+		td,
+		th {
+			border: 1px solid grey;
+		}
+
+		th {
+			font-weight: bold;
+			font-size: 80%;
+		}
+
+		td {
+			text-align: center;
+		}
+	</style>
 </head>
+
 <body>
-<h1>Склонение ФИО по падежам для Parser 3</h1>
-<p>Склоняет русские фамилии, имена и отчества из именительного во все остальные падежи. Подробнее на <a href="https://github.com/spearance/fio-morph-p3">GitHub</a></p>
-<pre><code class="language-parser3">@USE
+	<h1>Склонение ФИО по падежам для Parser 3</h1>
+	<p>Склоняет русские фамилии, имена и отчества из именительного в другие падежи. Подробнее на <a
+			href="https://github.com/spearance/fio-morph-p3">GitHub</a></p>
+	<pre><code class="language-parser3">@USE
 FioMorph.p
 
 #######################################
@@ -72,8 +83,8 @@ $fio[^FioMorph::create[
 ]]
 
 # Полное ФИО по падежам
-# Именительный
-^fio.fullName[i]
+# Именительный, фамилия справа
+^fio.fullName[i;r]
 # Родительный
 ^fio.fullName[R]
 # Дательный
@@ -103,58 +114,59 @@ $fio[^FioMorph::create[
 # full | short | abbr
 ^fio.gender[full]
 </code></pre>
-<h2>Пример преобразования</h2>
-<article>
-<table>
-<tr>
-<th width="33%">Падеж</th>
-<th width="33%">Мужской</th>
-<th>Женский</th>
-</tr>
-<tr>
-<td>Именительный</td>
-<td>Мышкин Лев Николаевич</td>
-<td>Сидорова Сидора Сидоровна</td>
-</tr>
-<tr>
-<td>Родительный</td>
-<td>Мышкина Льва Николаевича</td>
-<td>Сидоровой Сидоры Сидоровны</td>
-</tr>
-<tr>
-<td>Дательный</td>
-<td>Мышкину Льву Николаевичу</td>
-<td>Сидоровой Сидоре Сидоровне</td>
-</tr>
-<tr>
-<td>Винительный</td>
-<td>Мышкина Льва Николаевича</td>
-<td>Сидорову Сидору Сидоровну</td>
-</tr>
-<tr>
-<td>Творительный</td>
-<td>Мышкиным Львом Николаевичем</td>
-<td>Сидоровой Сидорой Сидоровной</td>
-</tr>
-<tr>
-<td>Предложный</td>
-<td>Мышкине Льве Николаевиче</td>
-<td>Сидоровой Сидоре Сидоровне</td>
-</tr>
-</table>
-<h3>Короткая запись Фамилия (родительный) + инициалы слева</h3>
-<p>Л.Н. Мышкина</p>
-<h3>Короткая запись Фамилия (дательный) + инициалы справа</h3>
-<p>Мышкину Л.Н.</p>
-<h3>Фамилия (предложный)</h3>
-<p>Мышкине</p>
-<h3>Имя (винительный)</h3>
-<p>Льва</p>
-<h3>Отчество (творительный)</h3>
-<p>Николаевичем</p>
-<h3>Пол</h3>
-<p>Мужской</p>
-</article>
-<script>hljs.highlightAll();</script>
+	<h2>Пример преобразования</h2>
+	<article>
+		<table>
+			<tr>
+				<th width="33%">Падеж</th>
+				<th width="33%">Мужской</th>
+				<th>Женский</th>
+			</tr>
+			<tr>
+				<td>Именительный</td>
+				<td>Мышкин Лев Николаевич</td>
+				<td>Сидорова Сидора Сидоровна</td>
+			</tr>
+			<tr>
+				<td>Родительный (справа)</td>
+				<td>Льва Николаевича Мышкина</td>
+				<td>Сидоры Сидоровны Сидоровой</td>
+			</tr>
+			<tr>
+				<td>Дательный</td>
+				<td>Мышкину Льву Николаевичу</td>
+				<td>Сидоровой Сидоре Сидоровне</td>
+			</tr>
+			<tr>
+				<td>Винительный</td>
+				<td>Мышкина Льва Николаевича</td>
+				<td>Сидорову Сидору Сидоровну</td>
+			</tr>
+			<tr>
+				<td>Творительный</td>
+				<td>Мышкиным Львом Николаевичем</td>
+				<td>Сидоровой Сидорой Сидоровной</td>
+			</tr>
+			<tr>
+				<td>Предложный</td>
+				<td>Мышкине Льве Николаевиче</td>
+				<td>Сидоровой Сидоре Сидоровне</td>
+			</tr>
+		</table>
+		<h3>Короткая запись Фамилия (родительный) + инициалы слева</h3>
+		<p>Л.Н. Мышкина</p>
+		<h3>Короткая запись Фамилия (дательный) + инициалы справа</h3>
+		<p>Мышкину Л.Н.</p>
+		<h3>Фамилия (предложный)</h3>
+		<p>Мышкине</p>
+		<h3>Имя (винительный)</h3>
+		<p>Льва</p>
+		<h3>Отчество (творительный)</h3>
+		<p>Николаевичем</p>
+		<h3>Пол</h3>
+		<p>Мужской</p>
+	</article>
+	<script>hljs.highlightAll();</script>
 </body>
+
 </html>
