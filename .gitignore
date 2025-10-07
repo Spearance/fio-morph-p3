@@ -1,0 +1,7 @@
+/cgi-bin/
+/lib/Debug.p
+
+.DS_Store
+*.scssc
+*.codekit3
+.htaccess

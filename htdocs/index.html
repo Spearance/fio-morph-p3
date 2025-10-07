@@ -1,0 +1,148 @@
+@USE
+../lib/FioMorph.p
+
+@auto[]
+$example[^file::load[text;example.p]]
+
+@main[]
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Демо склонение ФИО по падежам</title>
+	<meta name="description" content="демонстрация работы класса">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/parser3.min.js"></script>
+	<style>
+		body {
+			font-family: 'PT Sans','Arial',sans-serif;
+			font-size: 120%;
+			margin: 3em;
+		}
+		code {
+			background-color: #EEEEEE;
+			border-radius: 4px;
+			padding: 0.2em;
+		}
+		blockquote {
+			border-left: 3px solid #BBBBBB;
+			padding: 1em 0.5em;
+		}
+		.pre {
+			font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+			white-space: pre;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 0.5em 0;
+		}
+
+		td, th {
+			border: 1px solid grey;
+		}
+
+		th {
+			font-weight: bold;
+			font-size: 80%;
+		}
+		td {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1>Склонение ФИО по падежам для Parser 3</h1>
+	
+	<p>Склоняет русские фамилии, имена и отчества из именительного во все остальные падежи. Подробнее на <a href="https://github.com/spearance/fio-morph-p3">GitHub</a></p>
+
+	<pre><code class="language-parser3">^untaint{$example.text}</code></pre>
+
+	<h2>Пример преобразования</h2>
+	<article>
+
+			$fio[^FioMorph::create[
+				^rem{ фамилия }
+				$.surname[Мышкин]
+				^rem{ имя }
+				$.first[Лев]
+				^rem{ отчество }
+				$.middle[Николаевич]
+				^rem{ 1/0 -> мужчина/женщина }
+				$.gender(1)
+			]]
+
+			$fio1[^FioMorph::create[
+				^rem{ фамилия }
+				$.surname[Сидорова]
+				^rem{ имя }
+				$.first[Сидора]
+				^rem{ отчество }
+				$.middle[Сидоровна]
+				^rem{ 1/0 -> мужчина/женщина }
+				$.gender(0)
+			]]
+
+			<table>
+				<tr>
+					<th width="33%">Падеж</th>
+					<th width="33%">Мужской</th>
+					<th>Женский</th>
+				</tr>
+				<tr>
+					<td>Именительный</td>
+					<td>^fio.fullName[]</td>
+					<td>^fio1.fullName[]</td>
+				</tr>
+				<tr>
+					<td>Родительный</td>
+					<td>^fio.fullName[R]</td>
+					<td>^fio1.fullName[R]</td>
+				</tr>
+				<tr>
+					<td>Дательный</td>
+					<td>^fio.fullName[dat]</td>
+					<td>^fio1.fullName[dat]</td>
+				</tr>
+				<tr>
+					<td>Винительный</td>
+					<td>^fio.fullName[accusative]</td>
+					<td>^fio1.fullName[accusative]</td>
+				</tr>
+				<tr>
+					<td>Творительный</td>
+					<td>^fio.fullName[тв]</td>
+					<td>^fio1.fullName[тв]</td>
+				</tr>
+				<tr>
+					<td>Предложный</td>
+					<td>^fio.fullName[предложный]</td>
+					<td>^fio1.fullName[предложный]</td>
+				</tr>
+			</table>
+		
+			<h3>Короткая запись Фамилия (родительный) + инициалы слева</h3>
+			<p>^fio.shortName[r;l]</p>
+
+			<h3>Короткая запись Фамилия (дательный) + инициалы справа</h3>
+			<p>^fio.shortName[дательный]</p>
+
+			<h3>Фамилия (предложный)</h3>
+			<p>^fio.surName[предложный]</p>
+			
+			<h3>Имя (винительный)</h3>
+			<p>^fio.firstName[V]</p>
+			
+			<h3>Отчество (творительный)</h3>
+			<p>^fio.middleName[ins]</p>
+
+			<h3>Пол</h3>
+			<p>^fio.sex[full]</p>
+
+	</article>
+
+	<script>hljs.highlightAll();</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "fio-morph-p3",
+  "version": "0.1.0",
+  "author": "Evgeniy Lepeshkin <mail@spearance.ru> (https://spearance.ru)",
+  "license": "MIT",
+  "homepage": "https://github.com/spearance/markdown-p3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Spearance/fio-morph-p3.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
