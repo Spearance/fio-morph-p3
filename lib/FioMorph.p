@@ -1,6 +1,6 @@
 # FioMorph.p
-# v. 0.1.2
-# Evgeniy Lepeshkin, 2025-10-07
+# v. 0.1.3
+# Evgeniy Lepeshkin, 2025-10-10
 
 @CLASS
 FioMorph
@@ -17,7 +17,7 @@ $self.first[]
 $self.middle[]
 
 ^if($param is "string"){
-	^parseName[$param]
+	^_parseName[$param]
 }{
 	$self.surname[$param.surname]
 	$self.first[$param.first]
@@ -40,9 +40,6 @@ $self.middle[]
 
 #######################################
 @fullName[case;position]
-^if(!def $case){
-	$case[$DEFAULT.CASE]
-}
 ^switch[$position]{
 	^case[r;R;right;справа]{
 		$result[^firstName[$case]^if(def $self.middle){ ^middleName[$case]} ^surName[$case]]
@@ -56,9 +53,6 @@ $self.middle[]
 
 #######################################
 @shortName[case;position]
-^if(!def $case){
-	$case[$DEFAULT.CASE]
-}
 ^switch[$position]{
 	^case[l;L;left;слева]{
 		$result[^self.first.left(1).^if(def $self.middle){^self.middle.left(1).} ^surName[$case]]
@@ -75,23 +69,23 @@ $self.middle[]
 ^if(def $self.surname && ^self.surname.pos[-] > 0){
 	$parts[^self.surname.split[-;lv]]
 	^if($parts){
-		$result[^parts.menu{^changeCase[$case;surname;$parts.piece]}[-]]
+		$result[^parts.menu{^_changeCase[$case;surname;$parts.piece]}[-]]
 	}
 }{
-	$result[^changeCase[$case;surname]]
+	$result[^_changeCase[$case;surname]]
 }
 ### End @surName
 
 
 #######################################
 @firstName[case]
-$result[^changeCase[$case;first]]
+$result[^_changeCase[$case;first]]
 ### End @firstName
 
 
 #######################################
 @middleName[case]
-$result[^if(def $self.middle){^changeCase[$case;middle]}]
+$result[^if(def $self.middle){^_changeCase[$case;middle]}]
 ### End @middleName
 
 
@@ -106,11 +100,27 @@ $result[$hGender.[^type.lower[]].[$self.sex]]
 
 
 #######################################
-@changeCase[case;type;name]
-^switch[^case.lower[]]{
-	^case[i;nom;nominative;им;именительный;DEFAULT]{
-		$result[^if(def $name){$name}{$self.[$type]}]
+@checkGender[surname;middleName][man;woman]
+$result(2)
+^if(def $middleName){
+	$man(^middleName.match[ич^$][i])
+	^if(!$man){
+		$woman(^middleName.match[на^$][i])
 	}
+}(def $surname){
+	$man(^surname.match[(?:[ео]в|ин|([сц]к)?ий)^$][i])
+	^if(!$man){
+		$woman(^surname.match[(?:ва|на|([сц]к)?ая)^$][i])
+	}
+}
+
+^if($man){$result(1)}($woman){$result(0)}
+### End @checkGender
+
+
+#######################################
+@_changeCase[case;type;name]
+^switch[^case.lower[]]{
 	^case[r;gen;genitive;род;родительный]{
 		$result[^_morph[r;$type;$name]]
 	}
@@ -126,8 +136,11 @@ $result[$hGender.[^type.lower[]].[$self.sex]]
 	^case[p;pre;prepositional;пр;предложный]{
 		$result[^_morph[p;$type;$name]]
 	}
+	^case[i;nom;nominative;им;именительный;DEFAULT]{
+		$result[^if(def $name){$name}{$self.[$type]}]
+	}
 }
-### End @changeCase
+### End @_changeCase
 
 
 #######################################
@@ -190,7 +203,7 @@ $parts[^h.test.split[,;lv]]
 		}
 	}
 }
-### End @match
+### End @_match
 
 
 #######################################
@@ -220,39 +233,25 @@ $result[$str]
 
 
 #######################################
-@checkGender[surname;middleName][locals]
-$result(2)
-^if(def $middleName){
-	$man(^middleName.match[ич^$][i])
-	^if(!$man){
-		$woman(^middleName.match[на^$][i])
-	}
-}(def $surname){
-	$man(^surname.match[(?:[ео]в|ин|([сц]к)?ий)^$][i])
-	^if(!$man){
-		$woman(^surname.match[(?:ва|на|([сц]к)?ая)^$][i])
-	}
-}
-
-^if($man){$result(1)}($woman){$result(0)}
-### End @checkGender
-
-
-#######################################
-@parseName[name][parts]
+@_parseName[name][parts]
 ^if(def $name){
 	$name[^name.trim[]]
 	$name[^name.match[\s+][g]{ }]
 	$parts[^name.split[ ;lh]]
 
 	^if($parts){
-		^rem{ Добавить проверку: имя, отчество, фамилия }
-		$self.surname[$parts.0]
-		$self.first[$parts.1]
-		$self.middle[$parts.2]
+		^if(def $parts.2 && !^parts.2.match[(?:ич|на)][i]){
+			$self.surname[$parts.2]
+			$self.first[$parts.0]
+			$self.middle[$parts.1]
+		}{
+			$self.surname[$parts.0]
+			$self.first[$parts.1]
+			$self.middle[$parts.2]
+		}
 	}
 }
-### End @parseName
+### End @_parseName
 
 
 #######################################

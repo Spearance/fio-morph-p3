@@ -56,7 +56,9 @@ $example[^file::load[text;example.p]]
 <body>
 	<h1>Склонение ФИО по падежам для Parser 3</h1>
 	
-	<p>Склоняет русские фамилии, имена и отчества из именительного в другие падежи. Подробнее на <a href="https://github.com/spearance/fio-morph-p3">GitHub</a></p>
+	<p>Склоняет русские фамилии, имена и&nbsp;отчества из&nbsp;именительного в&nbsp;другие падежи. Подробнее на&nbsp;<a href="https://github.com/spearance/fio-morph-p3">GitHub</a>.</p>
+	
+	<p>Страница с&nbsp;<a href="./test/">тестами</a> где собраны 300 фамилий, уникальных по&nbsp;трем последним буквам, а&nbsp;также различные варианты со&nbsp;сдвоенными фамилиями, и&nbsp;к&nbsp;ним добавлены произвольные имена.</p>
 
 	<pre><code class="language-parser3">^untaint{$example.text}</code></pre>
 
@@ -140,6 +142,11 @@ $example[^file::load[text;example.p]]
 
 			<h3>Пол</h3>
 			<p>^fio.gender[full]</p>
+
+			<h3>Краткая форма вызова конструктора</h3>
+			$fio2[^FioMorph::create[Иван Иванович Иванов]]
+			<pre><code class="language-parser3">^$fio2[^^FioMorph::create[Иван Иванович Иванов]]^#0A^^fio2.fullName[]</code></pre>
+			^fio2.fullName[]
 
 	</article>
 

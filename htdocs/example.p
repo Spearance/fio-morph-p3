@@ -22,6 +22,11 @@ $fio[^FioMorph::create[
 	$.gender(1)
 ]]
 
+# или
+$fio[^FioMorph::create[Иванов Иван Иванович]]
+# или
+$fio[^FioMorph::create[Иван Иванович Иванов]]
+
 # Полное ФИО по падежам
 # Именительный, фамилия справа
 ^fio.fullName[i;r]
