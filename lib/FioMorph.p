@@ -1,6 +1,6 @@
 # FioMorph.p
-# v. 0.1.3
-# Evgeniy Lepeshkin, 2025-10-10
+# v. 1.0.0
+# Evgeniy Lepeshkin, 2026-01-13
 
 @CLASS
 FioMorph
@@ -103,14 +103,14 @@ $result[$hGender.[^type.lower[]].[$self.sex]]
 @checkGender[surname;middleName][man;woman]
 $result(2)
 ^if(def $middleName){
-	$man(^middleName.match[ич^$][i])
+	$man(^middleName.match[(?:ич|\-огл[ыу]|\-ул[ыу]|\-уулу)^$][i])
 	^if(!$man){
-		$woman(^middleName.match[на^$][i])
+		$woman(^middleName.match[(?:на|\-[кг]ызы^$][i])
 	}
 }(def $surname){
-	$man(^surname.match[(?:[ео]в|ин|([сц]к)?ий)^$][i])
+	$man(^surname.match[(?:[еоё]в|[иы]н|[кхн]?ий|[оы]й)^$][i])
 	^if(!$man){
-		$woman(^surname.match[(?:ва|на|([сц]к)?ая)^$][i])
+		$woman(^surname.match[(?:[оеё]ва|[ыи]на|([сц]к)?ая?)^$][i])
 	}
 }
 
